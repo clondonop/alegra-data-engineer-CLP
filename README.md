@@ -1,6 +1,6 @@
-# 📘 README — Data Warehouse Financiero (MRR, CAC, FCF)
+# 📘 Data Warehouse Financiero (MRR, CAC, FCF)
 
-Este proyecto implementa un **modelo dimensional** para analizar métricas financieras clave de una Innova SaaS: **MRR**, **CAC**, **FCF**, churn, ingresos por país y desempeño por producto.  
+Este proyecto implementa un **modelo dimensional** para analizar métricas financieras clave de Innova SaaS: **MRR**, **CAC**, **FCF**, churn, ingresos por país y desempeño por producto.  
 Incluye documentación, arquitectura ETL, SQL de negocio y estructura dbt-like.
 
 ---
@@ -64,8 +64,8 @@ El modelo sigue la metodología de **Kimball** y utiliza **SCD Tipo 2** para Cus
 - 'fact_employee_cost'  
 
 Documentación en:  
- 'docs/1.Modelo Dimensional-Descripción y Justificacion.pdf'  
- 'docs/1.Modelo Dimensional-Diagramas.pdf'
+ [Modelo Dimensional - PDF](docs/1.Modelo Dimensional-Descripción y Justificacion.pdf)
+ [Diagrama del Modelo](docs/1.Modelo Dimensional-Diagramas.pdf)
 
 ---
 
@@ -79,13 +79,13 @@ El ETL está estructurado en 4 capas:
 4. **DWH** — carga de dimensiones y hechos  
 
 Detalles completos en:  
- 'docs/2.Lógica ETL arquitectura.pdf'
+[Arquitectura ETL](docs/2.Lógica ETL arquitectura.pdf)
 
 ---
 
 ##  5. Consultas SQL de Negocio
 
-Carpeta: '/finance_queries/'
+[Carpeta de Queries](finance-queries/)
 
 ### Preguntas resueltas:
 - **MRR total — agosto 2024** → 'mrr_august_2024.sql'  
