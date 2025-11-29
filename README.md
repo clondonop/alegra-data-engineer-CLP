@@ -64,8 +64,8 @@ El modelo sigue la metodología de **Kimball** y utiliza **SCD Tipo 2** para Cus
 - 'fact_employee_cost'  
 
 Documentación en:  
- [Modelo Dimensional - PDF](docs/1.Modelo Dimensional-Descripción y Justificacion.pdf)
- [Diagrama del Modelo](docs/1.Modelo Dimensional-Diagramas.pdf)
+ [Modelo Dimensional - PDF] ('docs/1.Modelo Dimensional-Descripción y Justificacion.pdf')
+ [Diagrama del Modelo] ('docs/1.Modelo Dimensional-Diagramas.pdf')
 
 ---
 
@@ -79,7 +79,7 @@ El ETL está estructurado en 4 capas:
 4. **DWH** — carga de dimensiones y hechos  
 
 Detalles completos en:  
-[Arquitectura ETL](docs/2.Lógica ETL arquitectura.pdf)
+[Arquitectura ETL]('docs/2.Lógica ETL arquitectura.pdf')
 
 ---
 
