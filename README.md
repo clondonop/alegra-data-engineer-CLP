@@ -1,6 +1,6 @@
 # 📘 README — Data Warehouse Financiero (MRR, CAC, FCF)
 
-Este proyecto implementa un **modelo dimensional** para analizar métricas financieras clave de una empresa SaaS: **MRR**, **CAC**, **FCF**, churn, ingresos por país y desempeño por producto.  
+Este proyecto implementa un **modelo dimensional** para analizar métricas financieras clave de una Innova SaaS: **MRR**, **CAC**, **FCF**, churn, ingresos por país y desempeño por producto.  
 Incluye documentación, arquitectura ETL, SQL de negocio y estructura dbt-like.
 
 ---
