@@ -1,3 +1,8 @@
+CREATE TABLE IF NOT EXISTS dim_provider (
+    provider_key     BIGSERIAL PRIMARY KEY,
+    provider_name    VARCHAR(200) UNIQUE
+);
+
 CREATE UNIQUE INDEX IF NOT EXISTS ux_dim_provider_name
     ON dim_provider (provider);
 

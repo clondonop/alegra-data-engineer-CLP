@@ -1,3 +1,7 @@
+CREATE TABLE IF NOT EXISTS dim_expense_category (
+    expense_category_key   BIGSERIAL PRIMARY KEY,
+    category               VARCHAR(200) UNIQUE
+);
 
 CREATE UNIQUE INDEX IF NOT EXISTS ux_dim_expense_category
     ON dim_expense_category (category);

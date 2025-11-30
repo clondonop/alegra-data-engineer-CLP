@@ -1,13 +1,19 @@
--- Índice único por nombre de país (business key)
+CREATE TABLE IF NOT EXISTS dim_country (
+    country_key BIGSERIAL PRIMARY KEY,
+    country_code VARCHAR(10),
+    country_name VARCHAR(100) UNIQUE,
+    region VARCHAR(100),
+    continent VARCHAR(50)
+);
+
 CREATE UNIQUE INDEX IF NOT EXISTS ux_dim_country_name
     ON dim_country (country_name);
 
--- ETL / UPSERT desde todas las fuentes que traen country
 INSERT INTO dim_country (
-    country_code,          -- NULL por ahora
+    country_code,
     country_name,
-    region,                -- NULL por ahora
-    continent              -- NULL por ahora
+    region,
+    continent
 )
 SELECT DISTINCT
     NULL::VARCHAR(10)                        AS country_code,

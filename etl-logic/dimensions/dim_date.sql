@@ -1,4 +1,17 @@
-INSERT INTO DIM_DATE (date_key, full_date, year, month, day, quarter)
+CREATE TABLE IF NOT EXISTS dim_date (
+    date_key        INTEGER PRIMARY KEY,     -- YYYYMMDD
+    full_date       DATE NOT NULL,
+    day             INTEGER,
+    month           INTEGER,
+    month_name      VARCHAR(20),
+    quarter         INTEGER,
+    year            INTEGER,
+    week_of_year    INTEGER,
+    is_month_end    BOOLEAN,
+    is_weekend      BOOLEAN
+);
+
+INSERT INTO dim_date (date_key, full_date, year, month, day, quarter)
 SELECT 
     TO_CHAR(date_value, 'YYYYMMDD')::INTEGER as date_key,
     date_value as full_date,

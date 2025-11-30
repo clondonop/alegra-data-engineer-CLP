@@ -1,3 +1,13 @@
+CREATE TABLE IF NOT EXISTS dim_product (
+    product_key         BIGSERIAL PRIMARY KEY,
+    product_id          VARCHAR(200) UNIQUE,
+    product_name        VARCHAR(200),
+    product_type        VARCHAR(100),
+    product_category    VARCHAR(100),
+    unit_cost_usd       NUMERIC(18,2),
+    is_active           BOOLEAN
+);
+
 CREATE UNIQUE INDEX IF NOT EXISTS ux_dim_product_id
     ON dim_product (product_id);
 

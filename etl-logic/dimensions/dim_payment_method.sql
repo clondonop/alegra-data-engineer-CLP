@@ -1,15 +1,11 @@
-CREATE UNIQUE INDEX IF NOT EXISTS ux_dim_acquisition_channel_name
-    ON dim_acquisition_channel (channel_name);
+CREATE TABLE IF NOT EXISTS dim_payment_method (
+    payment_method_key   BIGSERIAL PRIMARY KEY,
+    method               VARCHAR(200) UNIQUE
+);
 
-INSERT INTO dim_acquisition_channel (
-    channel_name,
-    channel_category,
-    cost_per_acquisition_avg
-)
-SELECT DISTINCT
-    INITCAP(TRIM(c.acquisition_channel)) AS channel_name,
-    NULL::VARCHAR(100)                   AS channel_category,
-    NULL::NUMERIC(18,2)                  AS cost_per_acquisition_avg
-FROM stg_customers c
-WHERE c.acquisition_channel IS NOT NULL
-ON CONFLICT (channel_name) DO NOTHING;
+INSERT INTO dim_payment_method (payment_method_key, method)
+SELECT 
+    (SELECT COALESCE(MAX(payment_method_key), 0) + ROW_NUMBER() OVER (ORDER BY method)),
+    method
+FROM stg_payments
+WHERE method NOT IN (SELECT method FROM dim_payment_method);
