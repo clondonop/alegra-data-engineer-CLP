@@ -1,0 +1,156 @@
+version: 2
+
+models:
+  # ===========================
+  # DIM_CUSTOMER (SCD2 vista final)
+  # ===========================
+  - name: dim_customer
+    description: "Dimensión de clientes con historial SCD2 basado en snapshot dim_customer_scd."
+    columns:
+      - name: customer_key
+        description: "Surrogate key de la dimensión customer (customer_id + dbt_valid_from)."
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Business key del cliente."
+        tests:
+          - not_null
+
+      - name: registration_date_key
+        description: "Fecha de registro del cliente en formato YYYYMMDD."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+      - name: is_current
+        description: "Flag que indica si el registro es la versión vigente del cliente."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+      - name: country
+        description: "Nombre del país asociado al cliente."
+
+      - name: segment
+        description: "Segmento del cliente según clasificación de negocio."
+
+      - name: acquisition_channel
+        description: "Canal de adquisición del cliente."
+
+  # ===========================
+  # DIM_SUBSCRIPTION (SCD2 vista final)
+  # ===========================
+  - name: dim_subscription
+    description: "Dimensión de suscripciones con historial SCD2 basado en snapshot dim_subscription_scd."
+    columns:
+      - name: subscription_key
+        description: "Surrogate key de la suscripción (subscription_id + dbt_valid_from)."
+        tests:
+          - not_null
+          - unique
+
+      - name: subscription_id
+        description: "Business key de la suscripción."
+        tests:
+          - not_null
+
+      - name: plan
+        description: "Nombre del plan o tier contratado por el cliente."
+
+      - name: status
+        description: "Estado actual de la suscripción (active, paused, cancelled, etc.)."
+        tests:
+          - accepted_values:
+              values: ['active', 'cancelled', 'paused']
+              config:
+                severity: warn   # por si en el futuro aparecen otros valores
+
+      - name: monthly_price_usd
+        description: "Precio mensual recurrente asociado a la suscripción."
+        tests:
+          - not_null
+
+      - name: start_date_key
+        description: "Fecha de inicio de la suscripción en formato YYYYMMDD."
+        tests:
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+      - name: end_date_key
+        description: "Fecha de fin de la suscripción en formato YYYYMMDD (puede ser null si sigue activa)."
+
+      - name: is_current
+        description: "Flag que indica si el registro es la versión vigente de la suscripción."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+  # ===========================
+  # FACT_SUBSCRIPTION_MRR
+  # ===========================
+  - name: fact_subscription_mrr
+    description: "Tabla de hechos de MRR por cliente y suscripción, a nivel snapshot mensual."
+    columns:
+      - name: date_key
+        description: "Fecha del snapshot mensual (primer día del mes) en formato YYYYMMDD."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+      - name: customer_key
+        description: "Referencia al cliente asociado a la suscripción en el mes del snapshot."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
+
+      - name: subscription_key
+        description: "Referencia a la suscripción en la dimensión dim_subscription."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_subscription')
+              field: subscription_key
+
+      - name: country_key
+        description: "Referencia al país asociado al cliente para análisis geográfico."
+        tests:
+          - relationships:
+              to: ref('dim_country')
+              field: country_key
+
+      - name: mrr_usd
+        description: "Monto de MRR en USD para la suscripción en ese mes."
+        tests:
+          - not_null
+
+      - name: is_active_flag
+        description: "Flag (0/1) que indica si la suscripción está activa en el mes del snapshot."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+
+      - name: is_new_flag
+        description: "Flag (0/1) que indica si la suscripción es nueva en ese mes."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+
+      - name: is_churned_flag
+        description: "Flag (0/1) que indica si la suscripción churnea en ese mes."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]

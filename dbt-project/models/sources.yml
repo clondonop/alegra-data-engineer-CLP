@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw                # ajusta según tu BD
+    tables:
+      - name: customers
+      - name: employees
+      - name: expenses
+      - name: payments
+      - name: subscriptions
+      - name: transactions

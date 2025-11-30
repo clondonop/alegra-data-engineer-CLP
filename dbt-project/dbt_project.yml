@@ -1,0 +1,13 @@
+name: 'innova'
+version: '1.0.0'
+profile: 'innova'
+
+models:
+  innova:
+    staging:
+      +materialized: view
+    dimensions:
+      +materialized: table
+    facts:
+      +materialized: incremental
+      +on_schema_change: append

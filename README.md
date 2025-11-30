@@ -1,6 +1,6 @@
 # 📘 Data Warehouse Financiero (MRR, CAC, FCF)
 
-Este proyecto implementa un **modelo dimensional** para analizar métricas financieras clave de Innova SaaS: **MRR**, **CAC**, **FCF**, churn, ingresos por país y desempeño por producto.  
+Este proyecto implementa un **modelo dimensional** para analizar métricas financieras clave de Innova SaaS: **MRR**, **CAC**, **FCF** y ingresos por país.
 Incluye documentación, arquitectura ETL, SQL de negocio y estructura dbt-like.
 
 ---
@@ -8,10 +8,9 @@ Incluye documentación, arquitectura ETL, SQL de negocio y estructura dbt-like.
 ## 🚀 1. Objetivo del Proyecto
 Construir un **Data Warehouse Financiero** que habilite:
 
-- MRR mensual y churn.
+- MRR 
 - CAC considerando marketing + nómina.
 - FCF a partir de ingresos cobrados y gastos reales.
-- Ingresos por país, canal, cohorte y producto.
 - Dashboard ejecutivo para toma de decisiones.
 
 ---
@@ -20,6 +19,11 @@ Construir un **Data Warehouse Financiero** que habilite:
 
 - **`dashboard/`**  
   Contiene las visualizaciones ejecutivas que responden al **Punto 4 del reto**, incluyendo análisis clave basados en MRR, CAC, FCF e ingresos por país.
+  Para visualizar correctamente el tablero:
+  - Abrir el archivo PBIX
+  - Ir a: Transformar datos → Administrar parámetros
+  - Cambiar el parámetro RepoPath a la ruta local donde está el repositorio
+  - Cerrar y aplicar
 
 - **`dbt-project/`**  
   Incluye el proyecto automatizado utilizando **dbt**, cumpliendo con el **Punto 5.a del reto**, donde se propone la automatización del flujo de datos y la escalabilidad del modelo.
@@ -95,30 +99,19 @@ Detalles completos en:
 - **País con mayor revenue — 2024** → 'most_total_revenue_x_country.sql'  
 - **CAC anual promedio** → 'avg_cac_anual.sql'  
 
-Cada consulta demuestra que el modelo soporta métricas del negocio complejas con SQL claro y eficiente.
-
 ---
 
 ## 6. Bonus: Automatización y Escalabilidad
 
 ### **Automatización**
-- dbt (incremental models)  
+
+- Automatizaria el proceso de ETL con la herramienta DBT dado que está integra todas las buenas practicas de la ingenieria de software a los scripts SQL, como lo son los testing,versionamiento y la documentación. Adicional que es cloud-agnostic y orchestrator-agnostic , por lo cual si hay un cambio de proveedor de servicios o se va a utilizar un multi-cloud para disponibilidad, la misma logica desarrollada funcionaria para los diferentes escenarios. 
+Se incluye una carpeta con estructuacion de [proyecto dbt](dbt-project/). 
 
 ### **Escalabilidad**
-- Nuevos países → 'dim_country' ya soporta expansión  
-- Nuevas monedas → agregar 'dim_currency'  
+- El modelo dimensional propuesto es altamente escalable. Siguiendo los principios de Kimball, las dimensiones son entidades independientes y extensibles, lo que permite incorporar nuevos miembros sin impactar las tablas de hechos. Por ejemplo, la dimensión de países (dim_country) ya está normalizada y preparada para recibir nuevos valores conforme la empresa opere en más regiones, sin requerir cambios estructurales. De igual forma, la incorporación de una dimensión adicional y pequeña, como dim_currency, se integraría naturalmente con las dimensiones y hechos existentes, manteniendo la coherencia del diseño y permitiendo análisis multi-moneda sin afectar el grano de las fact tables.
 
-### **ML / IA (opcional)**
-- Clasificación automática de gastos  
-- Forecast financiero (MRR, churn, FCF)
-
-
-##  7. Ejecución del Proyecto
-
-1. Poblar tablas 'stg_*'  
-2. Ejecutar ETL de dimensiones  
-3. Ejecutar ETL de hechos  
-4. Validar resultados con las queries del folder 'finance_queries/'  
-
+### **IA/ML**
+  - La incorporación de IA o modelos de machine learning es especialmente valiosa para tareas de forecasting y análisis predictivo. Estos modelos pueden capturar patrones no lineales y relaciones complejas que los métodos tradicionales no logran identificar con precisión. Al contar con un historial de datos amplio y bien estructurado en el data warehouse, la empresa puede aprovechar esta base sólida para entrenar modelos más robustos, mejorar la precisión de sus proyecciones y tomar decisiones operativas y estratégicas más informadas.Sin embargo, no se recomienda aplicar modelos de ML para la clasificación de gastos, ya que este proceso ya está correctamente resuelto mediante las transformaciones y reglas de negocio implementadas en dbt y en las dimensiones correspondientes. Al tratarse de categorías bien definidas y determinísticas, un modelo de clasificación no aportaría valor adicional y solo aumentaría complejidad operativa sin justificación técnica.
 
 
